@@ -1,0 +1,229 @@
+{
+	"info": {
+		"_postman_id": "b02c68c8-4cce-4a67-a354-7a026f18c14c",
+		"name": "0708",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "主题首页",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "820e2b77-6a6f-4956-8fd2-0c862fce7abb",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"limit 参数长度功能验证\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    console.log(\"jsondata\",jsonData,jsonData['data'],jsonData['data'].length)",
+							"    // 判断长度是否为4",
+							"    pm.expect(jsonData['data'].length).to.eql(4);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});",
+							"",
+							"pm.test(\"Body matches string\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"true\");",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://118.31.19.120:3000/api/v1/topics?page=2&limit=4&mdrender=false",
+					"protocol": "http",
+					"host": [
+						"118",
+						"31",
+						"19",
+						"120"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"topics"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "2"
+						},
+						{
+							"key": "limit",
+							"value": "4"
+						},
+						{
+							"key": "mdrender",
+							"value": "false"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "新建主题",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b625c679-c063-438b-812f-988b6df53208",
+						"type": "text/javascript",
+						"exec": [
+							"",
+							"// 全局",
+							"// pm.globals.get(\"variable_key\");",
+							"",
+							"//局部",
+							"// let exceptval = pm.environment.get(\"exceptval\");",
+							"",
+							"// console.log(exceptval)",
+							"",
+							"",
+							"// 自定义",
+							"let exceptval = pm.variables.get(\"exceptval\");",
+							"",
+							"// 期望值",
+							"let error_msg = exceptval.error_msg",
+							"let success = exceptval.success",
+							"",
+							"",
+							"// 实际的结果",
+							"var resultdata = pm.response.json();",
+							"let result_sucess = resultdata.success",
+							"let result_error_msg = resultdata.error_msg",
+							"",
+							"pm.test(\"success 应该是false\", function () {",
+							"    pm.expect(result_sucess).to.eql(success);",
+							"});",
+							"",
+							"pm.test(\"err_msg 应该是xxxxx\", function () {",
+							"    pm.expect(result_error_msg).to.eql(error_msg);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"accesstoken\":\"cac0fb1f-d067-4119-b5e1-97ce29b5e189\",\n\t\"title\":\"{{title}}\",\n\t\"tab\":\"ask\",\n\t\"content\":\"cccdsdsdadadsdadadadasssd\"\n}\n"
+				},
+				"url": {
+					"raw": "{{URL}}/topics",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"topics"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "修改主题前创建主题",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "6738047e-5c9b-4d34-8b6d-54db14d17a1c",
+						"type": "text/javascript",
+						"exec": [
+							"let result = pm.response.json();",
+							"",
+							"let topic_id = result.topic_id;",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"pm.environment.set(\"topic_id\", topic_id);"
+						]
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "20548361-16fa-489c-874a-ec35d3cd0eb3",
+						"type": "text/javascript",
+						"exec": [
+							"pm.environment.set(\"tab\", \"share\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"accesstoken\":\"cac0fb1f-d067-4119-b5e1-97ce29b5e189\",\n\t\"title\":\"1111111111111\",\n\t\"tab\":\"{{tab}}\",\n\t\"content\":\"cccdsdsdadadsdadadadasssd\"\n}"
+				},
+				"url": {
+					"raw": "{{URL}}/topics",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"topics"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "修改主题",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"accesstoken\":\"cac0fb1f-d067-4119-b5e1-97ce29b5e189\",\n\t\"topic_id\":\"{{topic_id}}\",\n\t\"title\":\"1111111111111\",\n\t\"tab\":\"ask\",\n\t\"content\":\"cccdsdsdadadsdadadadasssd\"\n}"
+				},
+				"url": {
+					"raw": "{{URL}}/topics/update",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"topics",
+						"update"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

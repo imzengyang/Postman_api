@@ -1,0 +1,15 @@
+{
+  "id": "fb5abe7b-9ad8-480d-8fa7-523853f03c27",
+  "values": [
+    {
+      "key": "URL",
+      "value": "http://118.31.19.120:3000/api/v1",
+      "enabled": true,
+      "type": "text"
+    }
+  ],
+  "name": "My Workspace Globals",
+  "_postman_variable_scope": "globals",
+  "_postman_exported_at": "2018-07-08T05:40:19.727Z",
+  "_postman_exported_using": "Postman/6.1.4"
+}
